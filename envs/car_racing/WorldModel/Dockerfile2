@@ -1,0 +1,23 @@
+FROM ubuntu:18.04
+RUN apt-get update
+RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
+RUN apt-get install -y python3 python3-pip xvfb python3-opengl fontconfig python3-dev python-opencv
+RUN apt-get install -y build-essential zlib1g-dev libsdl2-dev libjpeg-dev nasm tar libbz2-dev libgtk2.0-dev cmake git libfluidsynth-dev libgme-dev libopenal-dev timidity libwildmidi-dev unzip libboost-all-dev
+RUN apt-get install -y wget g++ make cmake libsdl2-dev git zlib1g-dev libbz2-dev libjpeg-dev libfluidsynth-dev libgme-dev libopenal-dev libmpg123-dev libsndfile1-dev libwildmidi-dev libgtk-3-dev timidity nasm tar chrpath
+
+RUN apt install tmux -y
+WORKDIR /opt/app
+ADD . /opt/app
+RUN pip3 install pyzmq
+RUN pip3 install gym==0.9.4
+RUN rm /usr/local/lib/python3.6/dist-packages/gym/envs/box2d/car_racing.py
+#RUN rm /usr/local/lib/python3.6/dist-packages/gym/envs/box2d/car_dynamics.py
+RUN pip3 install tensorflow==1.13.1
+RUN pip3 install scipy==1.2
+RUN pip3 install pillow
+#COPY ./car_dynamics.py /usr/local/lib/python3.6/dist-packages/gym/envs/box2d
+RUN pip3 install sklearn
+RUN pip3 install Box2D
+COPY ./car_racing.py /usr/local/lib/python3.6/dist-packages/gym/envs/box2d/
+RUN pip3 install pyglet==1.3.2
+RUN pip3 install torch
